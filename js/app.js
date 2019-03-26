@@ -1,4 +1,5 @@
 const remToPixels = (rem) => rem * parseFloat(getComputedStyle(document.documentElement).fontSize);
+const showIf = (shouldShow, create) => !!shouldShow ? create() : none;
 
 // State
 const devMode = false;
@@ -91,16 +92,18 @@ const setupDeckControls = () => flexWith('insertCards',
     () => textButton('Remove -1', 'button', () => removeCard(gh.card.minusOne)),
     () => textButton('Remove 0', 'button', () => removeCard(gh.card.zero)));
 
+const drawCardButton = (card, text, className) => showIf(currentDeck.contains(card), () => textButton(text, className, () => drawCard(card)));
+
 const drawCardControls = () => flexWith('drawCards',
-    () => textButton('Draw Curse', 'button', () => drawCard(gh.card.curse)),
-    () => textButton('Draw Null', 'button', () => drawCard(gh.card.null)),
-    () => textButton('Draw -2', 'button', () => drawCard(gh.card.minusTwo)),
-    () => textButton('Draw -1', 'button', () => drawCard(gh.card.minusOne)),
-    () => textButton('Draw 0', 'button', () => drawCard(gh.card.zero)),
-    () => textButton('Draw +1', 'button', () => drawCard(gh.card.plusOne)),
-    () => textButton('Draw +2', 'button', () => drawCard(gh.card.plusTwo)),
-    () => textButton('Draw Crit', 'button', () => drawCard(gh.card.crit)),
-    () => textButton('Draw Blessing', 'button', () => drawCard(gh.card.blessing)));
+    () => drawCardButton(gh.card.curse, 'Draw Curse', 'button'),
+    () => drawCardButton(gh.card.null, 'Draw Null', 'button'),
+    () => drawCardButton(gh.card.minusTwo, 'Draw -2', 'button'),
+    () => drawCardButton(gh.card.minusOne, 'Draw -1', 'button'),
+    () => drawCardButton(gh.card.zero, 'Draw 0', 'button'),
+    () => drawCardButton(gh.card.plusOne, 'Draw +1', 'button'),
+    () => drawCardButton(gh.card.plusTwo, 'Draw +2', 'button'),
+    () => drawCardButton(gh.card.crit, 'Draw Crit', 'button'),
+    () => drawCardButton(gh.card.blessing, 'Draw Blessing', 'button'));
 
 // App Actions
 const update = () => {

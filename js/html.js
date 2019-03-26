@@ -1,3 +1,5 @@
+const none = false;
+
 const header = (createElement) => {
     const e = document.createElement('header');
     e.appendChild(createElement());
@@ -61,31 +63,34 @@ const td = (data) => {
     return e;
 };
 
-const divWith = (name, ...createElements) => {
-    const d = div(name);
-    createElements.forEach(e => d.appendChild(e()));
-    return d;
+const divWith = (name, ...createElements) => withChildren(div(name), ...createElements);
+
+const withChildren = (parent, ...createElements) => {
+    createElements.forEach(e => {
+        const element = e();
+        if (element !== none)
+            parent.appendChild(element)
+    });
+    return parent;
 };
+
 
 const rowWith = (name, ...createElements) => {
     const d = div(name);
     d.classList.add('row');
-    createElements.forEach(e => d.appendChild(e()));
-    return d;
+    return withChildren(d, ...createElements);
 };
 
 const flexWith = (name, ...createElements) => {
     const d = div(name);
     d.classList.add('flex');
-    createElements.forEach(e => d.appendChild(e()));
-    return d;
+    return withChildren(d, ...createElements);
 };
 
 const columnWith = (name, ...createElements) => {
     const d = div(name);
     d.classList.add('column');
-    createElements.forEach(e => d.appendChild(e()));
-    return d;
+    return withChildren(d, ...createElements);
 };
 
 const button = (name, className, onClick) => {
