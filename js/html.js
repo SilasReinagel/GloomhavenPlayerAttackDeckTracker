@@ -10,7 +10,21 @@ const h1 = (text) => {
     return e;
 };
 
-const div = (name) => {
+const h2 = (text) => {
+    const e = document.createElement('h2');
+    e.textContent = text;
+    return e;
+};
+
+const h3 = (text) => {
+    const e = document.createElement('h3');
+    e.textContent = text;
+    return e;
+};
+
+const div = (name, doNotUse) => {
+    if (!!doNotUse)
+        throw new Error(`Unexpected child element for div ${name}`);
     const e = document.createElement('div');
     e.classList.add(name);
     return e;
@@ -53,14 +67,48 @@ const divWith = (name, ...createElements) => {
     return d;
 };
 
-const button = (name, onClick) => {
+const rowWith = (name, ...createElements) => {
+    const d = div(name);
+    d.classList.add('row');
+    createElements.forEach(e => d.appendChild(e()));
+    return d;
+};
+
+const flexWith = (name, ...createElements) => {
+    const d = div(name);
+    d.classList.add('flex');
+    createElements.forEach(e => d.appendChild(e()));
+    return d;
+};
+
+const columnWith = (name, ...createElements) => {
+    const d = div(name);
+    d.classList.add('column');
+    createElements.forEach(e => d.appendChild(e()));
+    return d;
+};
+
+const button = (name, className, onClick) => {
     const e = document.createElement('button');
+    e.classList.add(className);
     e.onclick = onClick;
     return e;
 };
 
-const textButton = (name, onClick) => {
-    const e = button(name, onClick);
+const textButton = (name, className, onClick) => {
+    const e = button(name, className, onClick);
     e.textContent = name;
     return e;
+};
+
+const styled = (elem, style) => {
+    elem.style = style;
+    return elem;
+};
+
+const withClass = (elem, className) => {
+    if (!!className)
+        throw new Error('Undefined className');
+    elem.classList.add(className);
+    return elem;
 };

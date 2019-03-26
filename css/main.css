@@ -3,25 +3,45 @@
     --space-2: 1.0rem;
     --space-3: 1.5rem;
     --space-4: 2.0rem;
-    --site-color: #cecece;
+    --site-color: #ffffff;
+}
+
+@font-face {
+    font-family: 'Pirata One';
+    src: url('../fonts/pirataone-regular-webfont.eot');
+    src: url('../fonts/pirataone-regular-webfont.eot?#iefix') format('embedded-opentype'),
+    url('../fonts/pirataone-regular-webfont.woff2') format('woff2'),
+    url('../fonts/pirataone-regular-webfont.woff') format('woff'),
+    url('../fonts/pirataone-regular-webfont.ttf') format('truetype'),
+    url('../fonts/pirataone-regular-webfont.svg#pirata_oneregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
 }
 
 html, body {
     height: auto;
     min-height: 100%;
-    font-size: 16px;
-}
+    font-size: 16px;}
 
 body {
     box-sizing: border-box;
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
-    background-color: #333333;
-    font-family: 'Aclonica', sans-serif;
-    padding:0;
-    margin:0;
+    font-family: 'Open Sans', sans-serif;
+    padding: 0;
+    margin: 0;
     color: var(--site-color);
     text-align: center;
+    background-color: #090909;
+    background-image: url('../img/gloomhaven.jpg');
+    background-repeat: no-repeat;
+    background-position-x: center;
+    background-position-y: bottom;
+    background-size: auto 100vh;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Pirata One', serif;
 }
 
 .measure {
@@ -33,6 +53,48 @@ body {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+    align-content: center;
+}
+
+.flex {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-content: space-between;
+    margin-left: 5vw;
+    margin-right: 5vw;
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    max-height: 15vh;
+}
+
+.control-item {
+    flex: 1 0 45%;
+    margin: 5px;
+}
+
+.column {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
+header {
+    margin-top: 12px;
+    margin-bottom: 10px;
+}
+
+header h3 {
+    margin-top: 12px;
+    margin-bottom: 10px;
 }
 
 img {
@@ -47,6 +109,10 @@ p {
     font-size: 1.0rem;
 }
 
+canvas {
+    background-color: rgba(0, 0, 0, 0.50) !important;
+}
+
 a img:hover {
     filter: brightness(120%);
 }
@@ -57,6 +123,118 @@ a:hover,
 a:active {
     color: #cecece;
     text-decoration: none;
+}
+
+.button {
+    width: 100px;
+    height: 40px;
+    border-radius: 10px;
+    background-image: url('../img/button.jpg');
+    background-color: rgba(0, 0, 0, 0.30) !important;
+    background-blend-mode: color;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position-y: center;
+    background-position-x: center;
+    color: white;
+    border: none;
+    margin: 5px;
+}
+
+.button:focus {
+    outline: 0;
+}
+
+.button:hover {
+    background-color: rgba(0, 0, 0, 0.15) !important;
+}
+
+.button.active {
+    background-color: rgba(0, 0, 0, 0) !important;
+}
+
+.start {
+    width: 80px;
+    height: 80px;
+    border-radius: 10px;
+    background-image: url('../img/change-mode.jpg');
+    background-color: rgba(0, 0, 0, 0.30) !important;
+    background-blend-mode: color;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position-y: center;
+    background-position-x: center;
+    color: white;
+    border: none;
+    margin: auto;
+}
+
+.start:hover {
+    background-color: rgba(0, 0, 0, 0.15) !important;
+}
+
+.start:active {
+    background-color: rgba(0, 0, 0, 0) !important;
+}
+
+.start:focus {
+    outline: 0;
+}
+
+.setup {
+    width: 80px;
+    height: 80px;
+    border-radius: 10px;
+    background-image: url('../img/change-mode.jpg');
+    background-color: rgba(0, 0, 0, 0.30) !important;
+    background-blend-mode: color;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position-y: center;
+    background-position-x: center;
+    color: white;
+    border: none;
+    margin: auto;
+}
+
+.setup:hover {
+    background-color: rgba(0, 0, 0, 0.15) !important;
+}
+
+.setup:active {
+    background-color: rgba(0, 0, 0, 0) !important;
+}
+
+.setup:focus {
+    outline: 0;
+}
+
+.shuffle {
+    width: 80px;
+    height: 80px;
+    border-radius: 10px;
+    background-image: url('../img/shuffle.jpg');
+    background-color: rgba(0, 0, 0, 0.30) !important;
+    background-blend-mode: color;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position-y: center;
+    background-position-x: center;
+    color: white;
+    border: none;
+    margin: auto;
+}
+
+.shuffle:hover {
+    background-color: rgba(0, 0, 0, 0.15) !important;
+}
+
+.shuffle:active {
+    background-color: rgba(0, 0, 0, 0) !important;
+}
+
+.shuffle:focus {
+    outline: 0;
 }
 
 /* Header */
@@ -101,13 +279,6 @@ a:active {
     flex-direction: column;
     justify-content: center;
     overflow: hidden;
-    padding-top: 1.5rem;
-    padding-bottom: 2rem;
-}
-
-.main div {
-    margin-top: 0.5vh;
-    margin-bottom: 0.5vh;
 }
 
 .slider {
@@ -116,33 +287,6 @@ a:active {
     height: 40vh;
     max-height: 40vh;
     margin: auto;
-}
-
-/* Releases */
-
-.releases div {
-    height: 17vh;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-evenly;
-}
-
-.release-link {
-    display: flex;
-    flex-direction: column;
-    vertical-align: center;
-    padding: 0 1em;
-    border-radius: 15px;
-    min-width: 8vw;
-}
-
-.release-link:hover {
-    background-color: #333333;
-    filter: brightness(120%);
-}
-
-.release-link i {
-    font-size: 2.1em;
 }
 
 /* Footer */
@@ -168,17 +312,37 @@ footer {
 
 /* Gloomhaven */
 
+.deck {
+    max-width: 96vw;
+}
+
 .odds {
     max-width: 30vw;
     min-width: 20vw;
     margin: auto;
+    border-radius: 10px;
+    background: url('../img/cardback.jpg');
+    background-color: rgba(0, 0, 0, 0.50) !important;
+    background-blend-mode: color;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position-y: center;
 }
 
-.odds td {
+.oddsDetail {
+    margin: auto;
+}
+
+.oddsDetail td {
     text-align: left;
+    width: 100px;
 }
 
-
+.oddsChart {
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-top: 12px;
+}
 
 
 /* Utility Spacing */
@@ -392,6 +556,10 @@ footer {
 
     .spacer {
         min-width: 3vw;
+    }
+
+    body {
+        background-size: 200vw auto;
     }
 }
 

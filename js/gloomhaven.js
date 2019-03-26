@@ -24,16 +24,19 @@ const isHit = true;
 const isMiss = false;
 const shouldReshuffle = true;
 const noReshuffle = false;
+const isPermanent = false;
+const isTemporary = true;
 
 // Root Module
 const gh = {};
 
-gh.effect = (name, value, isHit, applyEffect, reshuffle) => ({
+gh.effect = (name, value, isHit, applyEffect, reshuffle, isTemporary) => ({
     name: name,
     isHit: isHit,
     applyEffect: applyEffect,
     reshuffle: reshuffle,
-    value: value
+    value: value,
+    isTemporary: isTemporary
 });
 
 gh.draw = (cards, card) => {
@@ -70,15 +73,15 @@ gh.deckOf = (cards) => {
 };
 
 gh.card = {
-    null: gh.effect("x0", -99, isMiss, dmg => 0, shouldReshuffle),
-    crit: gh.effect("x2", 99, isHit, dmg => dmg * 2, shouldReshuffle),
-    zero: gh.effect("0", 0, isHit, dmg => dmg, noReshuffle),
-    minusOne: gh.effect("-1", -1, isHit, dmg => dmg - 1, noReshuffle),
-    minusTwo: gh.effect("-2", -2, isHit, dmg => dmg - 2, noReshuffle),
-    plusOne: gh.effect("+1", 1, isHit, dmg => dmg + 1, noReshuffle),
-    plusTwo: gh.effect("+2", 2, isHit, dmg => dmg + 2, noReshuffle),
-    blessing: gh.effect("x2", 100, isHit, dmg => dmg * 2, noReshuffle),
-    curse: gh.effect("x0", -100, isMiss, dmg => 0, noReshuffle),
+    null: gh.effect("x0", -99, isMiss, dmg => 0, shouldReshuffle, isPermanent),
+    crit: gh.effect("x2", 99, isHit, dmg => dmg * 2, shouldReshuffle, isPermanent),
+    zero: gh.effect("0", 0, isHit, dmg => dmg, noReshuffle, isPermanent),
+    minusOne: gh.effect("-1", -1, isHit, dmg => dmg - 1, noReshuffle, isPermanent),
+    minusTwo: gh.effect("-2", -2, isHit, dmg => dmg - 2, noReshuffle, isPermanent),
+    plusOne: gh.effect("+1", 1, isHit, dmg => dmg + 1, noReshuffle, isPermanent),
+    plusTwo: gh.effect("+2", 2, isHit, dmg => dmg + 2, noReshuffle, isPermanent),
+    blessing: gh.effect("x2", 100, isHit, dmg => dmg * 2, noReshuffle, isTemporary),
+    curse: gh.effect("x0", -100, isMiss, dmg => 0, noReshuffle, isTemporary),
 };
 
 gh.starterDeck = gh.deckOf([
@@ -108,11 +111,11 @@ Object.freeze(gh);
 
 // Main
 let current = gh.starterDeck
-    .draw(gh.card.plusOne)
-    .draw(gh.card.zero)
-    .draw(gh.card.minusOne)
-    .draw(gh.card.minusOne)
-    .draw(gh.card.plusTwo);
+    .without(gh.card.plusOne)
+    .without(gh.card.zero)
+    .without(gh.card.minusOne)
+    .without(gh.card.minusOne)
+    .without(gh.card.plusTwo);
 
 //output(gh.odds(current.cards));
 

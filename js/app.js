@@ -5,18 +5,29 @@ const devMode = false;
 let deck = gh.starterDeck;
 let currentDeck = gh.starterDeck;
 let odds = gh.odds(currentDeck.cards);
+let mode = 'setup';
 
 // Gui Components
-const title = () => header(() => h1('Gloomhaven Player Attack Deck Tracker'));
+const title = () => h2('Gloomhaven Player Attack Deck Tracker');
 
-const createDeck = () => divWith('deck', () => img('./img/cardback.jpg'));
+const setupDeckView = () =>
+    rowWith('deck',
+        () => oddsView(),
+        () => textButton('Deck Is Ready', 'start', startGame));
+
+const playDeckView = () =>
+    rowWith('deck',
+        () => oddsView(),
+        () => textButton('Reshuffle', 'shuffle', reshuffle),
+        () => textButton('Setup Deck', 'setup', setupDeck));
 
 const oddsRow = (first, second) => tr(td(first), td(second));
 const oddsView = () => {
-    return table('odds',
-        oddsRow('TotalCards', odds.totalCards),
-        oddsRow('Hit', odds.hit),
-        oddsRow('Miss', odds.miss));
+    return divWith('odds',
+        () => table('oddsDetail',
+            oddsRow('Cards', odds.totalCards),
+            oddsRow('Hit', odds.hit),
+            oddsRow('Miss', odds.miss)));
 };
 
 const oddsBarChart = (name, chartData) => {
@@ -67,37 +78,73 @@ const oddsChartData = (odds) => {
 
 const oddsChart = () => oddsBarChart('oddsChart', oddsChartData(odds));
 
-const addCardControls = () => divWith('insertCards',
-    () => textButton('Add Curse', () => addCard(gh.card.curse)),
-    () => textButton('Add Blessing', () => addCard(gh.card.blessing)));
+const setupDeckControls = () => flexWith('insertCards',
+    () => textButton('Reset Deck', 'button', () => resetDeck()),
+    () => textButton('Add Curse', 'button', () => addCard(gh.card.curse)),
+    () => textButton('Add Blessing', 'button', () => addCard(gh.card.blessing)),
+    () => textButton('Add -2', 'button', () => addCard(gh.card.minusTwo)),
+    () => textButton('Add -1', 'button', () => addCard(gh.card.minusOne)),
+    () => textButton('Add 0', 'button', () => addCard(gh.card.zero)),
+    () => textButton('Add +1', 'button', () => addCard(gh.card.plusOne)),
+    () => textButton('Add +2', 'button', () => addCard(gh.card.plusTwo)),
+    () => textButton('Remove -2', 'button', () => removeCard(gh.card.minusTwo)),
+    () => textButton('Remove -1', 'button', () => removeCard(gh.card.minusOne)),
+    () => textButton('Remove 0', 'button', () => removeCard(gh.card.zero)));
 
-const drawCardControls = () => divWith('drawCards',
-    () => textButton('Draw Curse', () => drawCard(gh.card.curse)),
-    () => textButton('Draw Miss', () => drawCard(gh.card.null)),
-    () => textButton('Draw -2', () => drawCard(gh.card.minusTwo)),
-    () => textButton('Draw -1', () => drawCard(gh.card.minusOne)),
-    () => textButton('Draw 0', () => drawCard(gh.card.zero)),
-    () => textButton('Draw +1', () => drawCard(gh.card.plusOne)),
-    () => textButton('Draw +2', () => drawCard(gh.card.plusTwo)),
-    () => textButton('Draw Crit', () => drawCard(gh.card.crit)),
-    () => textButton('Draw Blessing', () => drawCard(gh.card.blessing)));
+const drawCardControls = () => flexWith('drawCards',
+    () => textButton('Draw Curse', 'button', () => drawCard(gh.card.curse)),
+    () => textButton('Draw Null', 'button', () => drawCard(gh.card.null)),
+    () => textButton('Draw -2', 'button', () => drawCard(gh.card.minusTwo)),
+    () => textButton('Draw -1', 'button', () => drawCard(gh.card.minusOne)),
+    () => textButton('Draw 0', 'button', () => drawCard(gh.card.zero)),
+    () => textButton('Draw +1', 'button', () => drawCard(gh.card.plusOne)),
+    () => textButton('Draw +2', 'button', () => drawCard(gh.card.plusTwo)),
+    () => textButton('Draw Crit', 'button', () => drawCard(gh.card.crit)),
+    () => textButton('Draw Blessing', 'button', () => drawCard(gh.card.blessing)));
 
 // App Actions
-const reshuffle = () => {
-    currentDeck = deck;
+const update = () => {
     odds = gh.odds(currentDeck.cards);
     render();
+};
+
+const reshuffle = () => {
+    currentDeck = deck;
+    update();
 };
 
 const addCard = (card) => {
+    deck = deck.with(card);
     currentDeck = currentDeck.with(card);
-    odds = gh.odds(currentDeck.cards);
-    render();
+    update();
+};
+
+const removeCard = (card) => {
+    deck = deck.without(card);
+    currentDeck = currentDeck.without(card);
+    update();
 };
 
 const drawCard = (card) => {
+    if (card.isTemporary)
+        deck = deck.without(card);
     currentDeck = currentDeck.without(card);
-    odds = gh.odds(currentDeck.cards);
+    update();
+};
+
+const resetDeck = () => {
+    deck = gh.starterDeck;
+    currentDeck = deck;
+    update();
+};
+
+const startGame = () => {
+    mode = 'play';
+    render();
+};
+
+const setupDeck = () => {
+    mode = 'setup';
     render();
 };
 
@@ -108,22 +155,30 @@ const h = (app, createElement) => {
         app.appendChild(createElement());
 };
 
-const render = () => {
-    const header = document.getElementById('header');
-    while (header.firstChild) { header.firstChild.remove(); }
+const renderSetupView = (app) => {
+    h(app, () => setupDeckView());
+    app.appendChild(setupDeckControls());
+};
 
-    const app = document.getElementById('app');
-    while (app.firstChild) { app.firstChild.remove(); }
-
-    h(header, () => title());
-    h(app, () => createDeck());
-    app.appendChild(textButton('Reshuffle', () => reshuffle()));
-    app.appendChild(addCardControls());
-    h(app, () => oddsView());
+const renderPlayView = (app) => {
+    h(app, () => playDeckView());
     app.appendChild(drawCardControls());
     app.appendChild(oddsChart());
 };
 
+const render = () => {
+    const header = document.getElementById('header');
+    while (header.firstChild) { header.firstChild.remove(); }
+    h(header, () => title());
+
+    const app = document.getElementById('app');
+    while (app.firstChild) { app.firstChild.remove(); }
+
+    if (mode === 'setup')
+        renderSetupView(app);
+    else
+        renderPlayView(app);
+};
 
 window.addEventListener("resize", render);
-window.onload = () => render();
+document.addEventListener("DOMContentLoaded", render);
