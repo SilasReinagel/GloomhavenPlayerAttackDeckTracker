@@ -8,6 +8,10 @@ let currentDeck = gh.starterDeck;
 let odds = gh.odds(currentDeck.cards);
 let mode = 'setup';
 
+// Gui State
+let currentChartCanvas = null;
+let currentOddsChart = null;
+
 // Gui Components
 const title = () => h2('Gloomhaven Player Attack Deck Tracker');
 
@@ -32,7 +36,13 @@ const oddsView = () => {
 };
 
 const oddsBarChart = (name, chartData) => {
-    const e = document.createElement('canvas');
+    if (!currentChartCanvas) {
+        currentChartCanvas = document.createElement('canvas');
+        output('Created Canvas');
+    }
+
+    output(currentChartCanvas);
+    const e = currentChartCanvas;
     const gfx = e.getContext('2d');
     e.classList.add(name);
     e.id = name;
@@ -42,33 +52,41 @@ const oddsBarChart = (name, chartData) => {
     gradient.addColorStop(1, 'green');
     chartData.datasets[0].backgroundColor = gradient;
 
-    new Chart(gfx, {
-        type: 'bar',
-        data: chartData,
-        options: {
-            legend: {
-                display: false
-            },
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        suggestedMin: 0,
-                        suggestedMax: 50,
-                        stepSize: 5,
-                        callback: (value, index, values) => `${value}%`
-                    }
-                }]
+    Chart.defaults.global.animation.duration = 100;
+    if (!currentOddsChart)
+        currentOddsChart = new Chart(gfx, {
+            type: 'bar',
+            data: chartData,
+            options: {
+                legend: {
+                    display: false
+                },
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            suggestedMin: 0,
+                            suggestedMax: 50,
+                            stepSize: 5,
+                            callback: (value, index, values) => `${value}%`
+                        }
+                    }]
+                }
             }
-        }
-    });
+        });
+    else
+        updateChartData(currentOddsChart, chartData);
 
     return e;
+};
+
+const updateChartData = (chart, data) => {
+    chart.data = data;
+    chart.update();
 };
 
 const oddsChartData = (odds) => {
     const b = odds.breakdown;
     return ({
-
         labels: [ '0X', '-2', '-1', '0,', '+1', '+2', '2X' ],
         datasets: [{
             label: 'odds',
