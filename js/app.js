@@ -2,7 +2,6 @@ const remToPixels = (rem) => rem * parseFloat(getComputedStyle(document.document
 const showIf = (shouldShow, create) => !!shouldShow ? create() : none;
 const d2 = (num) => +(Math.round(num + "e+2")  + "e-2");
 
-
 // State
 const devMode = false;
 const deckCards = 'deckCards';
@@ -23,7 +22,8 @@ const title = () => h2('Gloomhaven Player Attack Deck Tracker');
 const setupDeckView = () =>
     rowWith('deck',
         () => oddsView(),
-        () => textButton('Deck Is Ready', 'start', startGame));
+        () => textButton('Deck Is Ready', 'start', startGame),
+        () => textButton('Reset Deck', 'reset', () => resetDeck()));
 
 const playDeckView = () =>
     rowWith('deck',
@@ -103,7 +103,6 @@ const oddsChartData = (odds) => {
 const oddsChart = () => oddsBarChart('oddsChart', oddsChartData(odds));
 
 const setupDeckControls = () => flexWith('insertCards',
-    () => textButton('Reset Deck', 'button', () => resetDeck()),
     () => textButton('Add Curse', 'button', () => addCard(gh.card.curse)),
     () => textButton('Add Blessing', 'button', () => addCard(gh.card.blessing)),
     () => textButton('Add -2', 'button', () => addCard(gh.card.minusTwo)),
