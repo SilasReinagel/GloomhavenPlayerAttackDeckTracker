@@ -3,8 +3,11 @@ const showIf = (shouldShow, create) => !!shouldShow ? create() : none;
 
 // State
 const devMode = false;
-let deck = gh.starterDeck;
-let currentDeck = gh.starterDeck;
+const deckCards = 'deckCards';
+let io = localStorageIo('Gloomhaven-Player-Attack-Deck-Tracker');
+let deck = gh.deckOf(io.load(deckCards, () => gh.starterDeck.cards));
+console.log(deck);
+let currentDeck = deck;
 let odds = gh.odds(currentDeck.cards);
 let mode = 'setup';
 
@@ -38,10 +41,8 @@ const oddsView = () => {
 const oddsBarChart = (name, chartData) => {
     if (!currentChartCanvas) {
         currentChartCanvas = document.createElement('canvas');
-        output('Created Canvas');
     }
 
-    output(currentChartCanvas);
     const e = currentChartCanvas;
     const gfx = e.getContext('2d');
     e.classList.add(name);
@@ -58,6 +59,8 @@ const oddsBarChart = (name, chartData) => {
             type: 'bar',
             data: chartData,
             options: {
+                defaultFontColor: '#fff',
+                scaleFontColor: "#fff",
                 legend: {
                     display: false
                 },
@@ -135,26 +138,26 @@ const reshuffle = () => {
 };
 
 const addCard = (card) => {
-    deck = deck.with(card);
+    updateDeck(deck.with(card));
     currentDeck = currentDeck.with(card);
     update();
 };
 
 const removeCard = (card) => {
-    deck = deck.without(card);
+    updateDeck(deck.without(card));
     currentDeck = currentDeck.without(card);
     update();
 };
 
 const drawCard = (card) => {
     if (card.isTemporary)
-        deck = deck.without(card);
+        updateDeck(deck.without(card));
     currentDeck = currentDeck.without(card);
     update();
 };
 
 const resetDeck = () => {
-    deck = gh.starterDeck;
+    updateDeck(gh.starterDeck);
     currentDeck = deck;
     update();
 };
@@ -167,6 +170,11 @@ const startGame = () => {
 const setupDeck = () => {
     mode = 'setup';
     render();
+};
+
+const updateDeck = (newDeck) => {
+    io.save(deckCards, newDeck.cards);
+    deck = newDeck;
 };
 
 // Main
