@@ -1,5 +1,7 @@
 const remToPixels = (rem) => rem * parseFloat(getComputedStyle(document.documentElement).fontSize);
 const showIf = (shouldShow, create) => !!shouldShow ? create() : none;
+const d2 = (num) => +(Math.round(num + "e+2")  + "e-2");
+
 
 // State
 const devMode = false;
@@ -93,7 +95,7 @@ const oddsChartData = (odds) => {
         labels: [ '0X', '-2', '-1', '0,', '+1', '+2', '2X' ],
         datasets: [{
             label: 'odds',
-            data: [ b.miss, b.minusTwo, b.minusOne, b.zero, b.plusOne, b.plusTwo, b.crit ]
+            data: [ d2(b.miss), d2(b.minusTwo), d2(b.minusOne), d2(b.zero), d2(b.plusOne), d2(b.plusTwo), d2(b.crit) ]
         }]
     });
 };
