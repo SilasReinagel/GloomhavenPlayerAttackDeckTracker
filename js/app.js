@@ -99,8 +99,7 @@ const oddsChartData = (odds) => {
 
 const oddsChart = () => oddsBarChart('oddsChart', oddsChartData(odds));
 
-
-const cardButton = (card, onClick) => imageButton(`./img/am-p-${card.name}.png`, 'img-button', onClick);
+const cardButton = (card, onClick) => imageButton(`./img/am-p-${card.name.toLowerCase()}.png`, 'img-button', onClick);
 const addCardButton = (card) => cardButton(card, () => addCard(card));
 const addCardControls = () => flexWith('insertCards',
     () => addCardButton(gh.card.curse),
