@@ -30,8 +30,9 @@ const isTemporary = true;
 // Root Module
 const gh = {};
 
-gh.effect = (name, value, isHit, applyEffect, reshuffle, isTemporary) => ({
+gh.effect = (name, title, value, isHit, applyEffect, reshuffle, isTemporary) => ({
     name: name,
+    title: title,
     isHit: isHit,
     applyEffect: applyEffect,
     reshuffle: reshuffle,
@@ -42,7 +43,7 @@ gh.effect = (name, value, isHit, applyEffect, reshuffle, isTemporary) => ({
 gh.draw = (cards, card) => {
     const cardIndex = cards.findIndex((c) => c.value === card.value);
     if (cardIndex === -1)
-        throw new Error(`No ${card.name} found in deck`);
+        throw new Error(`No ${card.title} found in deck`);
     return without(cards, cardIndex);
 };
 
@@ -54,13 +55,13 @@ gh.odds = (cards) => {
         hit: percentString(hitChance),
         miss: percentString(100 - hitChance),
         breakdown: {
-            miss: percent(cards.filter(x => x.name === gh.card.null.name).length, numCards),
-            crit: percent(cards.filter(x => x.name === gh.card.crit.name).length, numCards),
-            minusTwo: percent(cards.filter(x => x.name === gh.card.minusTwo.name).length, numCards),
-            minusOne: percent(cards.filter(x => x.name === gh.card.minusOne.name).length, numCards),
-            zero: percent(cards.filter(x => x.name === gh.card.zero.name).length, numCards),
-            plusOne: percent(cards.filter(x => x.name === gh.card.plusOne.name).length, numCards),
-            plusTwo: percent(cards.filter(x => x.name === gh.card.plusTwo.name).length, numCards),
+            miss: percent(cards.filter(x => x.title === gh.card.null.title).length, numCards),
+            crit: percent(cards.filter(x => x.title === gh.card.crit.title).length, numCards),
+            minusTwo: percent(cards.filter(x => x.title === gh.card.minusTwo.title).length, numCards),
+            minusOne: percent(cards.filter(x => x.title === gh.card.minusOne.title).length, numCards),
+            zero: percent(cards.filter(x => x.title === gh.card.zero.title).length, numCards),
+            plusOne: percent(cards.filter(x => x.title === gh.card.plusOne.title).length, numCards),
+            plusTwo: percent(cards.filter(x => x.title === gh.card.plusTwo.title).length, numCards),
         }}
 };
 
@@ -74,15 +75,15 @@ gh.deckOf = (cards) => {
 };
 
 gh.card = {
-    null: gh.effect("x0", -99, isMiss, dmg => 0, shouldReshuffle, isPermanent),
-    crit: gh.effect("x2", 99, isHit, dmg => dmg * 2, shouldReshuffle, isPermanent),
-    zero: gh.effect("0", 0, isHit, dmg => dmg, noReshuffle, isPermanent),
-    minusOne: gh.effect("-1", -1, isHit, dmg => dmg - 1, noReshuffle, isPermanent),
-    minusTwo: gh.effect("-2", -2, isHit, dmg => dmg - 2, noReshuffle, isPermanent),
-    plusOne: gh.effect("+1", 1, isHit, dmg => dmg + 1, noReshuffle, isPermanent),
-    plusTwo: gh.effect("+2", 2, isHit, dmg => dmg + 2, noReshuffle, isPermanent),
-    blessing: gh.effect("x2", 100, isHit, dmg => dmg * 2, noReshuffle, isTemporary),
-    curse: gh.effect("x0", -100, isMiss, dmg => 0, noReshuffle, isTemporary),
+    null: gh.effect('null', "x0", -99, isMiss, dmg => 0, shouldReshuffle, isPermanent),
+    crit: gh.effect('crit', "x2", 99, isHit, dmg => dmg * 2, shouldReshuffle, isPermanent),
+    zero: gh.effect('zero', "0", 0, isHit, dmg => dmg, noReshuffle, isPermanent),
+    minusOne: gh.effect('minusOne', "-1", -1, isHit, dmg => dmg - 1, noReshuffle, isPermanent),
+    minusTwo: gh.effect('minusTwo', "-2", -2, isHit, dmg => dmg - 2, noReshuffle, isPermanent),
+    plusOne: gh.effect('plusOne', "+1", 1, isHit, dmg => dmg + 1, noReshuffle, isPermanent),
+    plusTwo: gh.effect('plusTwo', "+2", 2, isHit, dmg => dmg + 2, noReshuffle, isPermanent),
+    blessing: gh.effect('blessing', "x2", 100, isHit, dmg => dmg * 2, noReshuffle, isTemporary),
+    curse: gh.effect('curse', "x0", -100, isMiss, dmg => 0, noReshuffle, isTemporary),
 };
 
 gh.starterDeck = gh.deckOf([

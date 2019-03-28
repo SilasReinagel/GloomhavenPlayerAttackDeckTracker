@@ -1,13 +1,10 @@
 const remToPixels = (rem) => rem * parseFloat(getComputedStyle(document.documentElement).fontSize);
-const showIf = (shouldShow, create) => !!shouldShow ? create() : none;
 const d2 = (num) => +(Math.round(num + "e+2")  + "e-2");
 
 // State
-const devMode = false;
 const deckCards = 'deckCards';
 let io = localStorageIo('Gloomhaven-Player-Attack-Deck-Tracker');
 let deck = gh.deckOf(io.load(deckCards, () => gh.starterDeck.cards));
-console.log(deck);
 let currentDeck = deck;
 let odds = gh.odds(currentDeck.cards);
 let mode = 'setup';
@@ -92,7 +89,7 @@ const updateChartData = (chart, data) => {
 const oddsChartData = (odds) => {
     const b = odds.breakdown;
     return ({
-        labels: [ '0X', '-2', '-1', '0,', '+1', '+2', '2X' ],
+        labels: [ '0X', '-2', '-1', '0', '+1', '+2', '2X' ],
         datasets: [{
             label: 'odds',
             data: [ d2(b.miss), d2(b.minusTwo), d2(b.minusOne), d2(b.zero), d2(b.plusOne), d2(b.plusTwo), d2(b.crit) ]
@@ -102,30 +99,40 @@ const oddsChartData = (odds) => {
 
 const oddsChart = () => oddsBarChart('oddsChart', oddsChartData(odds));
 
-const setupDeckControls = () => flexWith('insertCards',
-    () => textButton('Add Curse', 'button', () => addCard(gh.card.curse)),
-    () => textButton('Add Blessing', 'button', () => addCard(gh.card.blessing)),
-    () => textButton('Add -2', 'button', () => addCard(gh.card.minusTwo)),
-    () => textButton('Add -1', 'button', () => addCard(gh.card.minusOne)),
-    () => textButton('Add 0', 'button', () => addCard(gh.card.zero)),
-    () => textButton('Add +1', 'button', () => addCard(gh.card.plusOne)),
-    () => textButton('Add +2', 'button', () => addCard(gh.card.plusTwo)),
-    () => textButton('Remove -2', 'button', () => removeCard(gh.card.minusTwo)),
-    () => textButton('Remove -1', 'button', () => removeCard(gh.card.minusOne)),
-    () => textButton('Remove 0', 'button', () => removeCard(gh.card.zero)));
 
-const drawCardButton = (card, text, className) => showIf(currentDeck.contains(card), () => textButton(text, className, () => drawCard(card)));
+const cardButton = (card, onClick) => imageButton(`./img/am-p-${card.name}.png`, 'img-button', onClick);
+const addCardButton = (card) => cardButton(card, () => addCard(card));
+const addCardControls = () => flexWith('insertCards',
+    () => addCardButton(gh.card.curse),
+    () => addCardButton(gh.card.blessing),
+    () => addCardButton(gh.card.minusTwo),
+    () => addCardButton(gh.card.minusOne),
+    () => addCardButton(gh.card.zero),
+    () => addCardButton(gh.card.plusOne),
+    () => addCardButton(gh.card.plusTwo));
+
+const removeCardButton = (card) => cardButton(card, () => removeCard(card));
+const removeCardControls = () => flexWith('removeCards',
+    () => removeCardButton(gh.card.minusTwo),
+    () => removeCardButton(gh.card.minusOne),
+    () => removeCardButton(gh.card.zero));
+
+
+const noCardButton = () => imageButton('./img/am-p-none.png', 'img-button', () => {});
+const drawCardButton = (card, imageName) => currentDeck.contains(card)
+    ? cardButton(card, () => drawCard(card))
+    : noCardButton();
 
 const drawCardControls = () => flexWith('drawCards',
-    () => drawCardButton(gh.card.curse, 'Draw Curse', 'button'),
-    () => drawCardButton(gh.card.null, 'Draw Null', 'button'),
-    () => drawCardButton(gh.card.minusTwo, 'Draw -2', 'button'),
-    () => drawCardButton(gh.card.minusOne, 'Draw -1', 'button'),
-    () => drawCardButton(gh.card.zero, 'Draw 0', 'button'),
-    () => drawCardButton(gh.card.plusOne, 'Draw +1', 'button'),
-    () => drawCardButton(gh.card.plusTwo, 'Draw +2', 'button'),
-    () => drawCardButton(gh.card.crit, 'Draw Crit', 'button'),
-    () => drawCardButton(gh.card.blessing, 'Draw Blessing', 'button'));
+    () => drawCardButton(gh.card.curse, 'curse'),
+    () => drawCardButton(gh.card.null, 'null'),
+    () => drawCardButton(gh.card.minusTwo, 'minustwo'),
+    () => drawCardButton(gh.card.minusOne, 'minusone'),
+    () => drawCardButton(gh.card.zero, 'zero'),
+    () => drawCardButton(gh.card.plusOne, 'plusone'),
+    () => drawCardButton(gh.card.plusTwo, 'plustwo'),
+    () => drawCardButton(gh.card.crit, 'crit'),
+    () => drawCardButton(gh.card.blessing, 'blessing'));
 
 // App Actions
 const update = () => {
@@ -180,18 +187,16 @@ const updateDeck = (newDeck) => {
 
 // Main
 
-const h = (app, createElement) => {
-    if (!devMode)
-        app.appendChild(createElement());
-};
-
 const renderSetupView = (app) => {
-    h(app, () => setupDeckView());
-    app.appendChild(setupDeckControls());
+    app.appendChild(setupDeckView());
+    app.appendChild(h3('Add Card'));
+    app.appendChild(addCardControls());
+    app.appendChild(h3('Remove Card'));
+    app.appendChild(removeCardControls());
 };
 
 const renderPlayView = (app) => {
-    h(app, () => playDeckView());
+    app.appendChild(playDeckView());
     app.appendChild(drawCardControls());
     app.appendChild(oddsChart());
 };
@@ -199,7 +204,7 @@ const renderPlayView = (app) => {
 const render = () => {
     const header = document.getElementById('header');
     while (header.firstChild) { header.firstChild.remove(); }
-    h(header, () => title());
+    header.appendChild(title());
 
     const app = document.getElementById('app');
     while (app.firstChild) { app.firstChild.remove(); }

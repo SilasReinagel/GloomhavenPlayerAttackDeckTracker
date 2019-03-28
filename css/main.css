@@ -44,6 +44,11 @@ h1, h2, h3, h4, h5, h6 {
     font-family: 'Pirata One', serif;
 }
 
+h3 {
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
 .measure {
     margin: 0 auto;
     max-width: 42rem;
@@ -122,6 +127,40 @@ a:hover,
 a:active {
     color: #cecece;
     text-decoration: none;
+}
+
+.img-button {
+    width: 90px;
+    height: 60px;
+    border-radius: 10px;
+    background-image: url('../img/button.jpg');
+    background-color: rgba(0, 0, 0, 0) !important;
+    background-blend-mode: color;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position-y: center;
+    background-position-x: center;
+    color: white;
+    border: none;
+    margin: 5px;
+}
+
+.img-button img {
+    min-width: 90px;
+    max-width: 90px;
+    height: auto;
+}
+
+.img-button:focus {
+    outline: 0;
+}
+
+.img-button:hover {
+    background-color: rgba(0, 0, 0, 0.15) !important;
+}
+
+.img-button.active {
+    background-color: rgba(0, 0, 0, 0.30) !important;
 }
 
 .button {
@@ -366,10 +405,6 @@ footer {
 
 
 /* Gloomhaven */
-
-.deck {
-    max-width: 96vw;
-}
 
 .odds {
     max-width: 30vw;

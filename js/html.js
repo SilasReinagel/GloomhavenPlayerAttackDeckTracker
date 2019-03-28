@@ -100,6 +100,14 @@ const button = (name, className, onClick) => {
     return e;
 };
 
+const imageButton = (imgName, className, onClick) => {
+    const e = document.createElement('button');
+    e.classList.add(className);
+    e.onclick = onClick;
+    e.style.backgroundImage = `url(${imgName})`;
+    return e;
+};
+
 const textButton = (name, className, onClick) => {
     const e = button(name, className, onClick);
     e.textContent = name;
