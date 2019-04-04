@@ -4,6 +4,8 @@
     --space-3: 1.5rem;
     --space-4: 2.0rem;
     --site-color: #ffffff;
+    --square-button-width: 5.2rem;
+    --square-button-height: 5.2rem;
 }
 
 @font-face {
@@ -18,10 +20,11 @@
     font-style: normal;
 }
 
-html, body {
+html, body, button {
     height: auto;
     min-height: 100%;
-    font-size: 16px;}
+    font-size: 16px !important;
+}
 
 body {
     box-sizing: border-box;
@@ -192,8 +195,8 @@ a:active {
 }
 
 .start {
-    width: 80px;
-    height: 80px;
+    width: var(--square-button-width);
+    height: var(--square-button-height);
     border-radius: 10px;
     background-image: url('../img/start.jpg');
     background-color: rgba(0, 0, 0, 0.30) !important;
@@ -248,8 +251,8 @@ a:active {
 }
 
 .setup {
-    width: 80px;
-    height: 80px;
+    width: var(--square-button-width);
+    height: var(--square-button-height);
     border-radius: 10px;
     background-image: url('../img/change-mode.jpg');
     background-color: rgba(0, 0, 0, 0.30) !important;
@@ -276,8 +279,8 @@ a:active {
 }
 
 .reset {
-    width: 80px;
-    height: 80px;
+    width: var(--square-button-width);
+    height: var(--square-button-height);
     border-radius: 10px;
     background-image: url('../img/reset.jpg');
     background-color: rgba(0, 0, 0, 0.30) !important;
@@ -303,9 +306,37 @@ a:active {
     outline: 0;
 }
 
+.encounter {
+    width: var(--square-button-width);
+    height: var(--square-button-height);
+    border-radius: 10px;
+    background-image: url('../img/encounter.jpg');
+    background-color: rgba(0, 0, 0, 0.30) !important;
+    background-blend-mode: color;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position-y: center;
+    background-position-x: center;
+    color: white;
+    border: none;
+    margin: auto;
+}
+
+.encounter:hover {
+    background-color: rgba(0, 0, 0, 0.15) !important;
+}
+
+.encounter:active {
+    background-color: rgba(0, 0, 0, 0) !important;
+}
+
+.encounter:focus {
+    outline: 0;
+}
+
 .shuffle {
-    width: 80px;
-    height: 80px;
+    width: var(--square-button-width);
+    height: var(--square-button-height);
     border-radius: 10px;
     background-image: url('../img/shuffle.jpg');
     background-color: rgba(0, 0, 0, 0.30) !important;
@@ -409,6 +440,7 @@ footer {
 .odds {
     max-width: 30vw;
     min-width: 20vw;
+    height: var(--square-button-height);
     margin: auto;
     border-radius: 10px;
     background: url('../img/cardback.jpg');
@@ -621,8 +653,8 @@ footer {
 /* Media Queries */
 
 @media screen and (max-width: 32rem) {
-    html {
-        font-size: 12px;
+    html, body, button {
+        font-size: 11px !important;
     }
 
     .mobile-hidden {
@@ -654,14 +686,14 @@ footer {
 }
 
 @media screen and (max-width: 48rem) {
-    html {
-        font-size: 14px;
+    html, body, button {
+        font-size: 13px !important;
     }
 }
 
 @media screen and (min-width: 48rem) {
-    html {
-        font-size: 16px;
+    html, body, button {
+        font-size: 16px !important;
     }
 
     .mobile-hidden {
@@ -669,7 +701,7 @@ footer {
 }
 
 @media screen and (min-width: 64rem) {
-    html {
-        font-size: 18px;
+    html, body, button {
+        font-size: 18px !important;
     }
 }

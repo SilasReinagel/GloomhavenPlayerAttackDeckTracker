@@ -20,7 +20,8 @@ const setupDeckView = () =>
     rowWith('deck',
         () => oddsView(),
         () => textButton('Deck Is Ready', 'start', startGame),
-        () => textButton('Reset Deck', 'reset', () => resetDeck()));
+        () => textButton('Encounter Done', 'encounter', endEncounter),
+        () => textButton('Reset Deck', 'reset', resetDeck));
 
 const playDeckView = () =>
     rowWith('deck',
@@ -99,7 +100,7 @@ const oddsChartData = (odds) => {
 
 const oddsChart = () => oddsBarChart('oddsChart', oddsChartData(odds));
 
-const cardButton = (card, onClick) => imageButton(`./img/am-p-${card.name.toLowerCase()}.png`, 'img-button', onClick);
+const cardButton = (card, onClick) => imageButton(`./img/am-p-${card.name.toLowerCase()}.jpg`, 'img-button', onClick);
 const addCardButton = (card) => cardButton(card, () => addCard(card));
 const addCardControls = () => flexWith('insertCards',
     () => addCardButton(gh.card.curse),
@@ -174,6 +175,12 @@ const startGame = () => {
     render();
 };
 
+const endEncounter = () => {
+    currentDeck = currentDeck.withoutTemporaryCards();
+    updateDeck(currentDeck);
+    update();
+};
+
 const setupDeck = () => {
     mode = 'setup';
     render();
@@ -186,19 +193,19 @@ const updateDeck = (newDeck) => {
 
 // Main
 
-const renderSetupView = (app) => {
-    app.appendChild(setupDeckView());
-    app.appendChild(h3('Add Card'));
-    app.appendChild(addCardControls());
-    app.appendChild(h3('Remove Card'));
-    app.appendChild(removeCardControls());
-};
+const setupView = () =>  divWith('setup-view',
+    () => setupDeckView(),
+    () => h3('Add Card'),
+    () => addCardControls(),
+    () => h3('Remove Card'),
+    () => removeCardControls()
+);
 
-const renderPlayView = (app) => {
-    app.appendChild(playDeckView());
-    app.appendChild(drawCardControls());
-    app.appendChild(oddsChart());
-};
+const playView = () => divWith('play-view',
+    () => playDeckView(),
+    () => drawCardControls(),
+    () => oddsChart()
+);
 
 const render = () => {
     const header = document.getElementById('header');
@@ -208,10 +215,7 @@ const render = () => {
     const app = document.getElementById('app');
     while (app.firstChild) { app.firstChild.remove(); }
 
-    if (mode === 'setup')
-        renderSetupView(app);
-    else
-        renderPlayView(app);
+    app.appendChild(mode === 'setup' ? setupView() : playView());
 };
 
 window.addEventListener("resize", render);

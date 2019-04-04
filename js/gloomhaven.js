@@ -69,6 +69,7 @@ gh.deckOf = (cards) => {
     const deck = { cards: cards };
     deck.without = (card) => gh.deckOf(gh.draw(deck.cards, card));
     deck.with = (card) => gh.deckOf(cards.concat([card]));
+    deck.withoutTemporaryCards = () => gh.deckOf(cards.filter(c => !c.isTemporary));
     deck.contains = (card) => !!cards.find(c => c.value === card.value);
     Object.freeze(deck);
     return deck;
