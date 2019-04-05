@@ -47,9 +47,11 @@ h1, h2, h3, h4, h5, h6 {
     font-family: 'Pirata One', serif;
 }
 
-h3 {
-    margin-top: 8px;
-    margin-bottom: 8px;
+.main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow: hidden;
 }
 
 .measure {
@@ -104,6 +106,11 @@ header h3 {
     margin-bottom: 10px;
 }
 
+h3 {
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
 img {
     max-width: 100%;
     width: 160px;
@@ -132,11 +139,9 @@ a:active {
     text-decoration: none;
 }
 
-.github {
+/* Buttons */
 
-}
-
-.img-button {
+.card-button {
     width: 90px;
     height: 60px;
     border-radius: 10px;
@@ -152,21 +157,21 @@ a:active {
     margin: 5px;
 }
 
-.img-button img {
+.card-button img {
     min-width: 90px;
     max-width: 90px;
     height: auto;
 }
 
-.img-button:focus {
+.card-button:focus {
     outline: 0;
 }
 
-.img-button:hover {
+.card-button:hover {
     background-color: rgba(0, 0, 0, 0.15) !important;
 }
 
-.img-button.active {
+.card-button.active {
     background-color: rgba(0, 0, 0, 0.30) !important;
 }
 
@@ -197,8 +202,6 @@ a:active {
 .button.active {
     background-color: rgba(0, 0, 0, 0) !important;
 }
-
-
 
 .square-button {
     width: var(--square-button-width);
@@ -280,23 +283,6 @@ a:active {
 .site-header div {
     justify-content: space-between;
     align-items: center;
-}
-
-/* Body Content */
-
-.main {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    overflow: hidden;
-}
-
-.slider {
-    width: 80%;
-    max-width: 600px;
-    height: 40vh;
-    max-height: 40vh;
-    margin: auto;
 }
 
 /* Footer */

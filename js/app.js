@@ -106,7 +106,7 @@ const oddsChartData = (odds) => {
 
 const oddsChart = () => oddsBarChart('oddsChart', oddsChartData(odds));
 
-const cardButton = (card, onClick) => imageButton(`./img/am-p-${card.name.toLowerCase()}.jpg`, 'img-button', onClick);
+const cardButton = (card, onClick) => imageButton(`./img/am-p-${card.name.toLowerCase()}.jpg`, 'card-button', onClick);
 const addCardButton = (card) => cardButton(card, () => addCard(card));
 const addCardControls = () => flexWith('insertCards',
     () => addCardButton(gh.card.curse),
@@ -124,7 +124,7 @@ const removeCardControls = () => flexWith('removeCards',
     () => removeCardButton(gh.card.zero));
 
 
-const noCardButton = () => imageButton('./img/am-p-none.png', 'img-button', () => {});
+const noCardButton = () => imageButton('./img/am-p-none.png', 'card-button', () => {});
 const drawCardButton = (card, imageName) => currentDeck.contains(card)
     ? cardButton(card, () => drawCard(card))
     : noCardButton();
