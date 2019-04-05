@@ -67,9 +67,13 @@ const divWith = (name, ...createElements) => withChildren(div(name), ...createEl
 
 const withChildren = (parent, ...createElements) => {
     createElements.forEach(e => {
-        const element = e();
-        if (element !== none)
-            parent.appendChild(element)
+        try {
+            const element = e();
+            if (element !== none)
+                parent.appendChild(element);
+        } catch (err) {
+            console.log('Unexpected type ' + typeof(e()));
+        }
     });
     return parent;
 };
@@ -119,9 +123,9 @@ const styled = (elem, style) => {
     return elem;
 };
 
-const withClass = (elem, className) => {
-    if (!!className)
-        throw new Error('Undefined className');
+const withClass = (className, elem) => {
+    if (!className)
+        throw new Error(`Undefined className: ${className}`);
     elem.classList.add(className);
     return elem;
 };

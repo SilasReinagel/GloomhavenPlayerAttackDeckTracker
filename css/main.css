@@ -132,6 +132,10 @@ a:active {
     text-decoration: none;
 }
 
+.github {
+
+}
+
 .img-button {
     width: 90px;
     height: 60px;
@@ -194,37 +198,11 @@ a:active {
     background-color: rgba(0, 0, 0, 0) !important;
 }
 
-.start {
-    width: var(--square-button-width);
-    height: var(--square-button-height);
-    border-radius: 10px;
-    background-image: url('../img/start.jpg');
-    background-color: rgba(0, 0, 0, 0.30) !important;
-    background-blend-mode: color;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position-y: center;
-    background-position-x: center;
-    color: white;
-    border: none;
-    margin: auto;
-}
 
-.start:hover {
-    background-color: rgba(0, 0, 0, 0.15) !important;
-}
-
-.start:active {
-    background-color: rgba(0, 0, 0, 0) !important;
-}
-
-.start:focus {
-    outline: 0;
-}
 
 .square-button {
-    width: 80px;
-    height: 80px;
+    width: var(--square-button-width);
+    height: var(--square-button-height);
     border-radius: 10px;
     background-image: url('../img/start.jpg');
     background-color: rgba(0, 0, 0, 0.30) !important;
@@ -251,115 +229,19 @@ a:active {
 }
 
 .setup {
-    width: var(--square-button-width);
-    height: var(--square-button-height);
-    border-radius: 10px;
     background-image: url('../img/change-mode.jpg');
-    background-color: rgba(0, 0, 0, 0.30) !important;
-    background-blend-mode: color;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position-y: center;
-    background-position-x: center;
-    color: white;
-    border: none;
-    margin: auto;
-}
-
-.setup:hover {
-    background-color: rgba(0, 0, 0, 0.15) !important;
-}
-
-.setup:active {
-    background-color: rgba(0, 0, 0, 0) !important;
-}
-
-.setup:focus {
-    outline: 0;
 }
 
 .reset {
-    width: var(--square-button-width);
-    height: var(--square-button-height);
-    border-radius: 10px;
     background-image: url('../img/reset.jpg');
-    background-color: rgba(0, 0, 0, 0.30) !important;
-    background-blend-mode: color;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position-y: center;
-    background-position-x: center;
-    color: white;
-    border: none;
-    margin: auto;
-}
-
-.reset:hover {
-    background-color: rgba(0, 0, 0, 0.15) !important;
-}
-
-.reset:active {
-    background-color: rgba(0, 0, 0, 0) !important;
-}
-
-.reset:focus {
-    outline: 0;
 }
 
 .encounter {
-    width: var(--square-button-width);
-    height: var(--square-button-height);
-    border-radius: 10px;
     background-image: url('../img/encounter.jpg');
-    background-color: rgba(0, 0, 0, 0.30) !important;
-    background-blend-mode: color;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position-y: center;
-    background-position-x: center;
-    color: white;
-    border: none;
-    margin: auto;
-}
-
-.encounter:hover {
-    background-color: rgba(0, 0, 0, 0.15) !important;
-}
-
-.encounter:active {
-    background-color: rgba(0, 0, 0, 0) !important;
-}
-
-.encounter:focus {
-    outline: 0;
 }
 
 .shuffle {
-    width: var(--square-button-width);
-    height: var(--square-button-height);
-    border-radius: 10px;
     background-image: url('../img/shuffle.jpg');
-    background-color: rgba(0, 0, 0, 0.30) !important;
-    background-blend-mode: color;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position-y: center;
-    background-position-x: center;
-    color: white;
-    border: none;
-    margin: auto;
-}
-
-.shuffle:hover {
-    background-color: rgba(0, 0, 0, 0.15) !important;
-}
-
-.shuffle:active {
-    background-color: rgba(0, 0, 0, 0) !important;
-}
-
-.shuffle:focus {
-    outline: 0;
 }
 
 /* Header */
@@ -386,10 +268,13 @@ a:active {
     margin: auto;
 }
 
-.site-github-img {
-    height: 3.5rem;
-    width: auto;
-    margin: 0 20px;
+.github {
+    height: 2rem !important;
+    width: 2rem !important;
+    position: absolute;
+    bottom: 0.8rem;
+    right: 2rem;
+    background-image: url('../img/github.png');
 }
 
 .site-header div {
@@ -416,14 +301,16 @@ a:active {
 
 /* Footer */
 
-footer {
-    height: 36px;
+.footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
     width: 100%;
-    padding-top: 10px;
-    background-color: #151515;
+    color: white;
+    text-align: right;
+    padding: 10px;
     display: flex;
-    justify-content: center;
-    box-shadow: 0 -6px 6px #151515;
+    justify-content: right;
 }
 
 .spacer {

@@ -3,6 +3,7 @@ const d2 = (num) => +(Math.round(num + "e+2")  + "e-2");
 
 // State
 const deckCards = 'deckCards';
+let pageIsInitialized = false;
 let io = localStorageIo('Gloomhaven-Player-Attack-Deck-Tracker');
 let deck = gh.deckOf(io.load(deckCards, () => gh.starterDeck.cards));
 let currentDeck = deck;
@@ -15,19 +16,24 @@ let currentOddsChart = null;
 
 // Gui Components
 const title = () => h2('Gloomhaven Player Attack Deck Tracker');
+const githubLink = () => squareTextButton('', 'github',
+    () => window.open('https://github.com/SilasReinagel/GloomhavenPlayerAttackDeckTracker','_blank'));
+
+const squareTextButton = (text, className, onClick) =>
+    withClass('square-button', textButton(text, className, onClick));
 
 const setupDeckView = () =>
     rowWith('deck',
         () => oddsView(),
-        () => textButton('Deck Is Ready', 'start', startGame),
-        () => textButton('Encounter Done', 'encounter', endEncounter),
-        () => textButton('Reset Deck', 'reset', resetDeck));
+        () => squareTextButton('Deck Is Ready', 'start', startGame),
+        () => squareTextButton('Encounter Done', 'encounter', endEncounter),
+        () => squareTextButton('Reset Deck', 'reset', resetDeck));
 
 const playDeckView = () =>
     rowWith('deck',
         () => oddsView(),
-        () => textButton('Reshuffle', 'shuffle', reshuffle),
-        () => textButton('Setup Deck', 'setup', setupDeck));
+        () => squareTextButton('Reshuffle', 'shuffle', reshuffle),
+        () => squareTextButton('Setup Deck', 'setup', setupDeck));
 
 const oddsRow = (first, second) => tr(td(first), td(second));
 const oddsView = () => {
@@ -126,11 +132,11 @@ const drawCardButton = (card, imageName) => currentDeck.contains(card)
 const drawCardControls = () => flexWith('drawCards',
     () => drawCardButton(gh.card.curse, 'curse'),
     () => drawCardButton(gh.card.null, 'null'),
-    () => drawCardButton(gh.card.minusTwo, 'minustwo'),
-    () => drawCardButton(gh.card.minusOne, 'minusone'),
+    () => drawCardButton(gh.card.minusTwo, 'minusTwo'),
+    () => drawCardButton(gh.card.minusOne, 'minusOne'),
     () => drawCardButton(gh.card.zero, 'zero'),
-    () => drawCardButton(gh.card.plusOne, 'plusone'),
-    () => drawCardButton(gh.card.plusTwo, 'plustwo'),
+    () => drawCardButton(gh.card.plusOne, 'plusOne'),
+    () => drawCardButton(gh.card.plusTwo, 'plusTwo'),
     () => drawCardButton(gh.card.crit, 'crit'),
     () => drawCardButton(gh.card.blessing, 'blessing'));
 
@@ -208,9 +214,16 @@ const playView = () => divWith('play-view',
 );
 
 const render = () => {
-    const header = document.getElementById('header');
-    while (header.firstChild) { header.firstChild.remove(); }
-    header.appendChild(title());
+    if (!pageIsInitialized) {
+        const header = document.getElementById('header');
+        while (header.firstChild) { header.firstChild.remove(); }
+        header.appendChild(title());
+
+        const footer = document.getElementById('footer');
+        while (footer.firstChild) { footer.firstChild.remove(); }
+        footer.appendChild(githubLink());
+        pageIsInitialized = true;
+    }
 
     const app = document.getElementById('app');
     while (app.firstChild) { app.firstChild.remove(); }
