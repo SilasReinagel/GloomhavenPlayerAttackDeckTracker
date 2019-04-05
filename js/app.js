@@ -9,13 +9,15 @@ let deck = gh.deckOf(io.load(deckCards, () => gh.starterDeck.cards));
 let currentDeck = deck;
 let odds = gh.odds(currentDeck.cards);
 let mode = 'setup';
+let lastDrawnCard = null;
 
 // Gui State
 let currentChartCanvas = null;
 let currentOddsChart = null;
+let drawView = null;
 
 // Gui Components
-const title = () => h2('Gloomhaven Player Attack Deck Tracker');
+const title = () => h2('Gloomhaven Player Attack Deck');
 const githubLink = () => squareTextButton('', 'github',
     () => window.open('https://github.com/SilasReinagel/GloomhavenPlayerAttackDeckTracker','_blank'));
 
@@ -43,6 +45,10 @@ const oddsView = () => {
             oddsRow('Hit', odds.hit),
             oddsRow('Miss', odds.miss)));
 };
+
+const drawPileView = () => lastDrawnCard
+        ? cardButton(lastDrawnCard, () => {})
+        : noCardButton();
 
 const oddsBarChart = (name, chartData) => {
     if (!currentChartCanvas) {
@@ -106,7 +112,8 @@ const oddsChartData = (odds) => {
 
 const oddsChart = () => oddsBarChart('oddsChart', oddsChartData(odds));
 
-const cardButton = (card, onClick) => imageButton(`./img/am-p-${card.name.toLowerCase()}.jpg`, 'card-button', onClick);
+const cardImage = (card) => `./img/am-p-${card.name}.jpg`;
+const cardButton = (card, onClick) => imageButton(cardImage(card), 'card-button', onClick);
 const addCardButton = (card) => cardButton(card, () => addCard(card));
 const addCardControls = () => flexWith('insertCards',
     () => addCardButton(gh.card.curse),
@@ -122,7 +129,6 @@ const removeCardControls = () => flexWith('removeCards',
     () => removeCardButton(gh.card.minusTwo),
     () => removeCardButton(gh.card.minusOne),
     () => removeCardButton(gh.card.zero));
-
 
 const noCardButton = () => imageButton('./img/am-p-none.png', 'card-button', () => {});
 const drawCardButton = (card, imageName) => currentDeck.contains(card)
@@ -164,6 +170,7 @@ const removeCard = (card) => {
 };
 
 const drawCard = (card) => {
+    lastDrawnCard = card;
     if (card.isTemporary)
         updateDeck(deck.without(card));
     currentDeck = currentDeck.without(card);
@@ -214,6 +221,7 @@ const playView = () => divWith('play-view',
 );
 
 const render = () => {
+    console.log('render');
     if (!pageIsInitialized) {
         const header = document.getElementById('header');
         while (header.firstChild) { header.firstChild.remove(); }
@@ -223,6 +231,8 @@ const render = () => {
         while (footer.firstChild) { footer.firstChild.remove(); }
         footer.appendChild(githubLink());
         pageIsInitialized = true;
+
+        drawView = drawPileView();
     }
 
     const app = document.getElementById('app');
