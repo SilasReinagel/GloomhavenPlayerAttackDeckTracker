@@ -33,7 +33,7 @@ const setupDeckView = () =>
 
 const playDeckView = () =>
     rowWith('deck',
-        () => oddsView(),
+        () => drawPileView(),
         () => squareTextButton('Reshuffle', 'shuffle', reshuffle),
         () => squareTextButton('Setup Deck', 'setup', setupDeck));
 
@@ -46,9 +46,9 @@ const oddsView = () => {
             oddsRow('Miss', odds.miss)));
 };
 
-const drawPileView = () => lastDrawnCard
+const drawPileView = () => withClass('drawPile', lastDrawnCard
         ? cardButton(lastDrawnCard, () => {})
-        : noCardButton();
+        : noCardButton());
 
 const oddsBarChart = (name, chartData) => {
     if (!currentChartCanvas) {
@@ -110,7 +110,7 @@ const oddsChartData = (odds) => {
     });
 };
 
-const oddsChart = () => oddsBarChart('oddsChart', oddsChartData(odds));
+const oddsChart = () => divWith('oddsChartDiv', () => oddsBarChart('oddsChart', oddsChartData(odds)));
 
 const cardImage = (card) => `./img/am-p-${card.name}.jpg`;
 const cardButton = (card, onClick) => imageButton(cardImage(card), 'card-button', onClick);

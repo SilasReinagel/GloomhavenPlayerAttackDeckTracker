@@ -6,6 +6,10 @@
     --site-color: #ffffff;
     --square-button-width: 5.2rem;
     --square-button-height: 5.2rem;
+    --card-button-width: 6.3rem;
+    --card-button-height: 4.2rem;
+    --draw-pile-width: 7.2rem;
+    --draw-pile-height: 4.8rem;
 }
 
 @font-face {
@@ -123,10 +127,6 @@ p {
     font-size: 1.0rem;
 }
 
-canvas {
-    background-color: rgba(0, 0, 0, 0.50) !important;
-}
-
 a img:hover {
     filter: brightness(120%);
 }
@@ -142,8 +142,8 @@ a:active {
 /* Buttons */
 
 .card-button {
-    width: 90px;
-    height: 60px;
+    width: var(--card-button-width);
+    height: var(--card-button-height);
     border-radius: 10px;
     background-image: url('../img/button.jpg');
     background-color: rgba(0, 0, 0, 0) !important;
@@ -158,8 +158,8 @@ a:active {
 }
 
 .card-button img {
-    min-width: 90px;
-    max-width: 90px;
+    min-width: var(--card-button-width);
+    max-width: var(--card-button-width);
     height: auto;
 }
 
@@ -337,6 +337,21 @@ a:active {
     margin-left: 5px;
     margin-right: 5px;
     margin-top: 12px;
+}
+
+canvas {
+    background-color: rgba(0, 0, 0, 0.50) !important;
+}
+
+.oddsChartDiv {
+    max-width: 98vw;
+}
+
+.drawPile {
+    margin-left: 1.5rem;
+    margin-right: 1.5rem;
+    height: var(--draw-pile-height);
+    width:  var(--draw-pile-width);
 }
 
 
@@ -538,10 +553,6 @@ a:active {
 
     .mobile-right{
         margin-right: -100px;
-    }
-
-    .container {
-        justify-content: space-between;
     }
 
     .site-title-img {
