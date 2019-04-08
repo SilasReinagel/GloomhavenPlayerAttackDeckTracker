@@ -122,7 +122,5 @@ let current = gh.starterDeck
 
 //output(gh.odds(current.cards));
 
-// TODO: Frontend
 // TODO: Advantage
 // TODO: Disadvantage
-// TODO: Add Card

@@ -3,12 +3,13 @@ const d2 = (num) => +(Math.round(num + "e+2")  + "e-2");
 
 // State
 const deckCards = 'deckCards';
+const currentView = 'currentView';
 let pageIsInitialized = false;
 let io = localStorageIo('Gloomhaven-Player-Attack-Deck-Tracker');
 let deck = gh.deckOf(io.load(deckCards, () => gh.starterDeck.cards));
 let currentDeck = deck;
 let odds = gh.odds(currentDeck.cards);
-let mode = 'setup';
+let view = io.load(currentView, () => 'setup');
 let lastDrawnCard = null;
 
 // Gui State
@@ -48,7 +49,7 @@ const oddsView = () => {
 
 const drawPileView = () => withClass('drawPile', lastDrawnCard
         ? cardButton(lastDrawnCard, () => {})
-        : noCardButton());
+        : imageButton('./img/am-p-back.jpg', 'card-button', () => {}));
 
 const oddsBarChart = (name, chartData) => {
     if (!currentChartCanvas) {
@@ -154,6 +155,7 @@ const update = () => {
 
 const reshuffle = () => {
     currentDeck = deck;
+    lastDrawnCard = null;
     update();
 };
 
@@ -184,7 +186,7 @@ const resetDeck = () => {
 };
 
 const startGame = () => {
-    mode = 'play';
+    navigateTo('manualPlay');
     render();
 };
 
@@ -195,13 +197,19 @@ const endEncounter = () => {
 };
 
 const setupDeck = () => {
-    mode = 'setup';
+    navigateTo('setup');
     render();
 };
 
 const updateDeck = (newDeck) => {
     io.save(deckCards, newDeck.cards);
     deck = newDeck;
+};
+
+const navigateTo = (newView) => {
+  view = newView;
+  io.save(currentView, view);
+  render();
 };
 
 // Main
@@ -214,14 +222,13 @@ const setupView = () =>  divWith('setup-view',
     () => removeCardControls()
 );
 
-const playView = () => divWith('play-view',
+const manualPlayView = () => divWith('play-view',
     () => playDeckView(),
     () => drawCardControls(),
     () => oddsChart()
 );
 
 const render = () => {
-    console.log('render');
     if (!pageIsInitialized) {
         const header = document.getElementById('header');
         while (header.firstChild) { header.firstChild.remove(); }
@@ -238,7 +245,7 @@ const render = () => {
     const app = document.getElementById('app');
     while (app.firstChild) { app.firstChild.remove(); }
 
-    app.appendChild(mode === 'setup' ? setupView() : playView());
+    app.appendChild(view === 'setup' ? setupView() : manualPlayView());
 };
 
 window.addEventListener("resize", render);
