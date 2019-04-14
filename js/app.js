@@ -191,6 +191,8 @@ const startGame = () => {
 };
 
 const endEncounter = () => {
+    currentDeck = deck;
+    lastDrawnCard = null;
     currentDeck = currentDeck.withoutTemporaryCards();
     updateDeck(currentDeck);
     update();
